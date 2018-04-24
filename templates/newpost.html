@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>Add a Blog Entry</h1>
+    <form action='/newpost' method= 'post'>
+        <label>
+            Title:
+            <input value='{{title}}' type="text" name='entry-title'/>
+        </label>
+        <p style='display: inline;' class='error'>{{title_error}}</p>
+        
+        <br>
+        <br>
+
+        <label>
+            Body:
+            <textarea name='entry-body'>{{body}}</textarea>
+        </label>
+        <p style='display: inline;' class='error'>{{body_error}}</p>
+        
+        <br>
+        <br>
+
+        <input type="submit" value='Add Entry' />
+    </form>
+
+    {% endblock %}
