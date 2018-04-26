@@ -33,17 +33,112 @@ class User(db.Model):
         self.email = email
         self.password = password
 
-
 def valid_entry(string):
     if string == '':
         return False
     else:
         return True
 
+def valid_password_conf(password, password_conf):
+    if password == password_conf:
+        return True
+    else:
+        return False
+
+def valid_char_count(string):
+    if len(string) >= 3:
+        return True
+    else:
+        return False
+
 
 @app.route('/')
 def index():
     return redirect('/blog')
+
+
+#@app.before_request
+#def require_login():
+#    allowed_routes = ['login', 'signup']
+#    if request.endpoint not in allowed_routes and 'email' not in session:
+#        return redirect('/login'
+
+@app.route('/login', methods=['POST', 'GET'])
+
+def login():
+    if request.method =='POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+
+        incorrect_password_error = ''
+        no_user_found_error = ''
+
+        if user.password !=password:
+            incorrect_password_error = 'incorrect password'
+
+        if not user:
+            no_user_found_error = 'this username does not exist'
+
+        else:
+            session['email'] = email
+            return redirect('/newpost')
+
+        #if user and user.password == password:
+        #    session['email'] = email
+        #    flash("Logged in")
+        #    return redirect('/newpost')
+        #else:
+        #    flash('User password incorrect, or user does not exist', 'error')
+
+    return render_template('login.html',
+                            email=email,
+                            incorrect_password_error=incorrect_password_error,
+                            no_user_found_error=no_user_found_error)
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        verify = request.form['verify']
+        existing_user = User.query.filter_by(email=email).first()
+
+        invalid_field_error = ''
+        duplicate_user_error = ''
+        verify_password_error = ''
+        invalid_username_error = ''
+        invalid_password_error = ''
+
+        if not valid_entry(email) or not valid_entry(password) or not valid_entry(verify):
+            invalid_field_error = 'One or more fields are invalid'
+
+        if email == existing_user:
+            duplicate_user_error = 'This username already exists'
+
+        if not valid_password_conf(password, verify):
+            verify_password_error = 'passwords do not match'
+
+        if not valid_char_count(email):
+            invalid_password_error = 'invalid username'
+
+        if not valid_char_count(password):
+            invalid_password_error = 'invalid password'
+        
+        else:
+            new_user = User(email, password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['email'] = email
+            return redirect('/newpost')
+
+    return render_template('signup.html')
+
+#@app.route('/logout')
+#def logout():
+#    del session['email']
+#    return redirect('/')
 
 
 
@@ -70,11 +165,11 @@ def post_entry():
 
     title = ''
     body = ''
+    #owner = User.query.filter_by(email=session['email']).first()
 
     if request.method == 'POST':
         title = request.form['entry-title']
         body = request.form['entry-body']
-        #owner = User.query.filter_by(email=session['email']).first()
 
         title_error = ''
         body_error = ''
