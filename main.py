@@ -135,10 +135,10 @@ def signup():
 
     return render_template('signup.html')
 
-#@app.route('/logout')
-#def logout():
-#    del session['email']
-#    return redirect('/')
+@app.route('/logout')
+def logout():
+    del session['email']
+    return redirect('/')
 
 
 
