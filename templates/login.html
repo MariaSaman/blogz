@@ -2,13 +2,13 @@
 
 {% block content %}
 <h1>Log in to Blog Account</h1>
-<p>If you don't have an account, you may <a href="/register">register</a> for one</p>
+<p>If you don't have an account, you may <a href="/signup">sign up</a> for one</p>
 <form action="/login" method="post">
     <table>
         <tr>
             <td><label for="email">Email</label></td>
             <td>
-                <input name="email" type="email" value="{{ email }}">
+                <input name="email" type="email" value="{{email}}">
                 <p style="display: inline;" class="error">{{no_user_found_error}}</p>
             </td>
         </tr>

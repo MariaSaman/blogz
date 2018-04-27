@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action='/' method='post'>
+
+
+        <ul>
+            {% for username in usernames %}
+            
+            <li>
+                <h2><a href="./?userid={{username.id}}">{{blog_entry.title}}</a> </h2>                  
+            </li>
+            
+            {% endfor %}
+        </ul>
+
+</form> 
+
+{% endblock %}
