@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form action='/blog' method='post'>
+
+{% if blog_entries | length == 0 %}
+<p>No posts yet</p>
+
+{% else %}
+        <ul>
+            {% for user_post in user_posts %}
+            <h2><a href="./blog?id={{blog_entry.id}}">{{user_post.title}}</a> </h2>
+
+                <br>
+                <p>{{blog_entry.body}}</p>
+                <br>
+                <p><a href="./user?id={{username.email}}">{{user_id.email}}</a></p>
+                              
+            </li>
+            {% endfor %}
+        </ul>
+
+</form> 
+{% endif %}
+{% endblock %}
