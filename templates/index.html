@@ -2,19 +2,16 @@
 
 {% block content %}
 
-<form action='/' method='post'>
-
 
         <ul>
             {% for username in usernames %}
             
             <li>
-                <h2><a href="./?userid={{username.id}}">{{username.email}}</a> </h2>                  
+                <p><a href="./blog?userid={{username.id}}">{{user.email}}</a> </p>                  
             </li>
             
             {% endfor %}
         </ul>
 
-</form> 
 
 {% endblock %}

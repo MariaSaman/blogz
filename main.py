@@ -51,6 +51,9 @@ def valid_char_count(string):
     else:
         return False
 
+def get_blog_listing(current_user_id):
+    return Blog.query.filter_by(owner_id=current_user_id).all()
+
 def blogs_by_author(current_user_id):
     return Blog.query.filter_by( owner_id=current_user_id).all()
 
@@ -64,13 +67,14 @@ def require_login():
 @app.route('/')
 def index():
 
-    usernames=User.query.all()
-    user = User.query.filter_by(email=email).first()
-
-    if user:
+    #user = User.query.filter_by(email=email).first()
+    user_id=request.args.get('userid')
+        
+    if user_id:
         return redirect("/blog")
     #check to see if user id exists and if it does you filter and if it doesnt do current return
     else:
+        usernames=User.query.all()
         return render_template('index.html', 
                                 usernames=usernames)
         
@@ -165,20 +169,23 @@ def logout():
 
 
 @app.route('/blog', methods=['POST', 'GET'])
-    
+
+#@app.route("/ratings", methods=['GET'])
+#def movie_ratings():
+#    return render_template('ratings.html', movies = get_watched_movies(logged_in_user().id))
+
 def blog_listing():
 
     blog_id=request.args.get('id')
     user_id=request.args.get('userid')
-    owner = User.query.filter_by(email=session['email']).first()
-    print (user_id)
+        
     if blog_id:
         blog_entry = Blog.query.get(blog_id)
         return render_template("post.html", blog_entry=blog_entry)
 
     if user_id:
         user_posts = User.query.filter_by(owner_id=user_id) 
-        print (user_id)
+        
         return render_template("singleUser.html",
                                 user_posts = user_posts )
     
@@ -186,8 +193,7 @@ def blog_listing():
         blog_entries = Blog.query.all()
         return render_template("blog.html", blog_entries=blog_entries)
 
-    
-
+        
     # get request for dynamic user page
     # #if owner_id:
     #     == 'POST':
