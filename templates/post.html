@@ -3,6 +3,7 @@
 
 
 <h2>{{blog_entry.title}} </h2>
-                <p>{{blog_entry.body}}</p>
+<p>{{blog_entry.body}}</p>
+<p>written by: <a href="./blog?userid={{blog_entry.owner.id}}">{{blog_entry.owner.email}}</a></p>
         
 {% endblock %}

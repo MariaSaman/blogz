@@ -4,16 +4,15 @@
 
     <ul>
         {% for user_post in user_posts %}
-        <h2><a href="./blog?id={{blog_entry.id}}">{{user_post.title}}</a> </h2>
+        <h2><a href="./blog?id={{user_post.id}}>">{{user_post.title}}</a> </h2>
 
             <br>
-            <p>{{blog_entry.body}}</p>
+            <p>{{user_post.body}}</p>
             <br>
-            <p><a href="./user?id={{username.email}}">{{user_id.email}}</a></p>
+            <p>written by:<a href="./blog?userid={{user_post.owner.id}}">{{user_post.owner.email}}</a></p>
                             
         </li>
         {% endfor %}
     </ul>
  
-{% endif %}
 {% endblock %}

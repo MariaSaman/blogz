@@ -54,8 +54,8 @@ def valid_char_count(string):
 def get_blog_listing(current_user_id):
     return Blog.query.filter_by(owner_id=current_user_id).all()
 
-def blogs_by_author(current_user_id):
-    return Blog.query.filter_by( owner_id=current_user_id).all()
+#def blog_by_author(current_user_id):
+    #return Blog.query.filter_by( owner_id=current_user_id).all()
 
 
 @app.before_request
@@ -168,27 +168,22 @@ def logout():
 
 
 
-@app.route('/blog', methods=['POST', 'GET'])
-
-#@app.route("/ratings", methods=['GET'])
-#def movie_ratings():
-#    return render_template('ratings.html', movies = get_watched_movies(logged_in_user().id))
+@app.route('/blog')
 
 def blog_listing():
 
     blog_id=request.args.get('id')
     user_id=request.args.get('userid')
-        
+            
     if blog_id:
         blog_entry = Blog.query.get(blog_id)
         return render_template("post.html", blog_entry=blog_entry)
 
     if user_id:
-        user_posts = User.query.filter_by(user_id=user_id) 
-        
+        user_posts = Blog.query.filter_by(owner_id=user_id).all() 
         return render_template("singleUser.html",
-                                user_posts = user_posts )
-    
+                                user_posts = user_posts)
+        
     else:
         blog_entries = Blog.query.all()
         return render_template("blog.html", blog_entries=blog_entries)
